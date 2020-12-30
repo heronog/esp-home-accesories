@@ -1,0 +1,10 @@
+platform: neopixelbus
+name: ${device_uppercase} Light
+type: GRB
+pin: GPIO3
+num_leds: ${neopixel_leds}
+id: ${neopixel_id}
+default_transition_length: 0s
+effects:
+  - addressable_scan:
+      move_interval: 20ms

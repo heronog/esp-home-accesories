@@ -1,0 +1,22 @@
+substitutions:
+  device_uppercase: Infinity Eclipse
+  device_lowercase: infinityeclipse
+  neopixel_leds: "29"
+  neopixel_id: rgb_light
+  button_button_id: button
+  button_toggle_id: ${neopixel_id}
+
+esphome:
+  name: ${device_lowercase}
+  platform: ESP8266
+  board: nodemcuv2
+
+packages:
+  wifi: !include common/wifi.yaml
+  api: !include common/api.yaml
+
+light:
+  - <<: !include common/neopixel_light.yaml
+
+binary_sensor:
+  - <<: !include common/button_light_toggle.yaml

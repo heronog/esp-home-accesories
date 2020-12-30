@@ -1,0 +1,8 @@
+packages:
+  secrets: !include secrets.yaml
+
+logger:
+api:
+  password: ${api_password}
+ota:
+  password: ${api_password}

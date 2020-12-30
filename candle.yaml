@@ -1,0 +1,29 @@
+substitutions:
+  device_uppercase: Candle
+  device_lowercase: candle
+  neopixel_leds: "20"
+  neopixel_id: rgb_light
+  button_button_id: button
+  button_toggle_id: ${neopixel_id}
+
+esphome:
+  name: ${device_lowercase}
+  platform: ESP8266
+  board: nodemcuv2
+
+packages:
+  wifi: !include common/wifi.yaml
+  api: !include common/api.yaml
+
+light:
+  - platform: neopixelbus
+    name: ${device_uppercase}
+    variant: 400KBPS
+    type: GRB
+    pin: GPIO3
+    num_leds: 20
+    id: rgb_light
+    default_transition_length: 0s
+
+binary_sensor:
+  - <<: !include common/button_light_toggle.yaml

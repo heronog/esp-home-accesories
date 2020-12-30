@@ -1,0 +1,12 @@
+platform: gpio
+id: ${button_button_id}
+pin:
+  number: GPIO13
+  mode: INPUT_PULLUP
+  inverted: true
+filters:
+  - delayed_on: 75ms
+  - delayed_off: 25ms
+on_click:
+  - light.toggle:
+      id: ${button_toggle_id}
