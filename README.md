@@ -14,7 +14,7 @@ esphome . dashboard
 ```
 ## Setup
 
-You'll need to create a file `common/secrets.yaml` with the following
+Create a file `common/secrets.yaml` with the following
 
 ```
   substitutions:
