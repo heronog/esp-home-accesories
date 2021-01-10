@@ -30,7 +30,9 @@ You'll need to create a file `common/secrets.yaml` with the following
 ## Accessories
 
 ### Candle
+
 ![Herón Nicolás' candle light](images/candle_illustration.png)
+
 After losing our baby boy Herón Nicolás during labor, I wanted to have a small creative project to keep my hands
 busy. I made a small light that looks like a candle to help me think about him, and to take
 things slow, relax and live life. When the sun sets on his memorial location, the light turns on automatically.
