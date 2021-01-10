@@ -24,6 +24,30 @@ light:
     num_leds: 20
     id: rgb_light
     default_transition_length: 0s
+    internal: true
+  - platform: partition
+    name: "Candle fire"
+    id: candle_fire
+    segments:
+      - id: rgb_light
+        from: 17
+        to: 20
+    effects:
+      - addressable_flicker:
+          name: "candle_fire_flicker"
+          intensity: 50%
+    on_turn_on:
+      - light.control:
+          id: candle_fire
+          effect: "candle_fire_flicker"
+
+  - platform: partition
+    name: "Candle stick"
+    id: candle_stick
+    segments:
+      - id: rgb_light
+        from: 0
+        to: 16
 
 binary_sensor:
   - <<: !include common/button_light_toggle.yaml
