@@ -25,6 +25,7 @@ You'll need to create a file `common/secrets.yaml` with the following
     memorial_lat: "some latitude"
     memorial_long: "some longitude"
     timezone: "your TZ name"
+```
 
 ## Accessories
 
