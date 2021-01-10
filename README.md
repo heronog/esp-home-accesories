@@ -12,25 +12,37 @@ Edit in a regular editor and click upload on the dashboard or just use the dashb
 ```bash
 esphome . dashboard
 ```
+## Setup
+
+You'll need to create a file `common/secrets.yaml` with the following
+
+```
+  substitutions:
+    api_password: some_api_password
+    wifi_ssid: "your home wifi"
+    wifi_password: "your home wifi password"
+    hotspot_password: "some password for fallback wifi"
+    memorial_lat: "some latitude"
+    memorial_long: "some longitude"
+    timezone: "your TZ name"
 
 ## Accessories
 
-### Bathroom (removed)
-This is an RGB light, got the LEDs from amazon and they seem lower quality.
-Use the 400KBPS method and 0s transition time in the light configuration to make it work.
-
-Without the speed setting, it will light up random colors and behave strangely.
-Without the 0s transition, it will not turn off completely and flicker while transitioning between colors
-
 ### Candle
 After losing our baby boy Herón Nicolás during labor, I wanted to have a small creative project to keep my hands
-busy. I made a small light that lights up as a candle in the evenings and helps me think about him, and to take
-things slow, relax and live life to the fullest.
+busy. I made a small light that looks like a candle to helps me think about him, and to take
+things slow, relax and live life. When the sun sets on his memorial location, the light turns on automatically.
 
-I used the 400KB speed variant of the neopixel library here, reusing the circuit from the bathroom light above.
-I think the circuits are bad, it may be a brownout or just a blown out or defective chip in one of the LEDs.
- #TO-DO replace the LED strip
+This light has a single LED strip split into 2 logical segments. The full light is hidden from the API but each
+segment is controllable.
+
+The last 3 LEDs make the 'fire' section of the candle and have a flicker effect automatically applied to it when it's turned on.
+The 'stick' or body section of the candle is controllable too.
+
+There is a push button with a pull down resistor on pin `GPIO13` that will switch the full length of the strin on and off.
 
 ### Infinity Eclipse
 A small experiment for an infinity  mirror. Functionally it's just a regular neopixel on a ESP8266 nodemcu light the
 same as all above.
+
+The push button on `GPIO13` with a pull down resistor uses the same code as the candle light.
