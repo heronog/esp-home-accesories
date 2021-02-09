@@ -50,3 +50,41 @@ A small experiment for an infinity  mirror. Functionally it's just a regular neo
 same as all above.
 
 The push button on `GPIO13` with a pull down resistor uses the same code as the candle light.
+
+### Random notes
+
+Run this to start the pi-hole docker next to the homebridge docker
+
+```
+docker volume create dnsmasq
+
+docker volume create pihole
+docker run -d \
+  --name=pihole\
+  -e VIRTUAL_HOST=pi.hole\
+  -e PROXY_LOCATION=pi.hole\
+  --hostname pi.hole\
+  -p 80:80 -p 443:443 -p 53:53/tcp -p 53:53/udp\
+  --cap-add=NET_ADMIN\
+  --restart=unless-stopped\
+  -v pihole:/etc/pihole\
+  -v dnsmasq:/etc/dnsmasq.d\
+  -e TZ="America/Los_Angeles"\
+  -e ServerIP="192.168.1.5"\
+  --dns=127.0.0.1 --dns=1.1.1.2\
+  pihole/pihole:latest
+```
+
+Run this to start the homebridge server docker in the raspberry pi
+
+```
+  docker volume create homebridge
+  docker run -d \
+  --name=homebridge\
+  --restart=always\
+  -e HOMEBRIDGE_CONFIG_UI=1 \
+  -e HOMEBRIDGE_CONFIG_UI_PORT=8080 \
+  -v homebridge:/homebridge \
+  -p 8080:8080 -p 52689:52689 \
+  oznu/homebridge
+```
