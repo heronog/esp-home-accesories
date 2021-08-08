@@ -64,6 +64,7 @@ The basic component is the Pi-Hole DNS server. I have found that using the route
 is unstable and results in many drops in connectivity. Using my own local DNS with ad blocking is much better
 and has been pretty stable for a good while. This runs in a Raspberry Pi 3 on top of Ubuntu Server.
 
+### Pi-Hole
 * Run this to create and start the pi-hole docker container.
 ```
 docker volume create dnsmasq
