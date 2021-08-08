@@ -1,18 +1,24 @@
-# ESPHome based accessories for home automation
+# Home network setup
+
+These are just some small projects that I've been working on at home.
+There are a couple home automation and some networking projects.
+
+
+## ESPHome based accessories for home automation
 
 Install ESPHome from https://esphome.io/guides/getting_started_command_line.html
 On Mac, you can't use the docker method indicated there, as there is no USB device access for docker.
 
 Install pip on the mac in some other way. Some notes https://ahmadawais.com/install-pip-macos-os-x-python
 
-## Usage
+### Usage
 Use ESPHome normally. I find that running the integrated dashboard works really well for uploading.
 Edit in a regular editor and click upload on the dashboard or just use the dashboard
 
 ```bash
 esphome . dashboard
 ```
-## Setup
+### Setup
 
 Create a file `common/secrets.yaml` with the following
 
@@ -27,9 +33,9 @@ Create a file `common/secrets.yaml` with the following
     timezone: "your TZ name"
 ```
 
-## Accessories
+### Accessories
 
-### Candle
+#### Candle
 
 ![Herón Nicolás' candle light](images/candle_illustration.png)
 
@@ -45,16 +51,20 @@ The 'stick' or body section of the candle is controllable too.
 
 There is a push button with a pull down resistor on pin `GPIO13` that will switch the full length of the string on and off.
 
-### Infinity Eclipse
+#### Infinity Eclipse
 A small experiment for an infinity  mirror. Functionally it's just a regular neopixel on a ESP8266 nodemcu light the
 same as all above.
 
 The push button on `GPIO13` with a pull down resistor uses the same code as the candle light.
 
-### Random notes
+## Networking setup
 
-Run this to start the pi-hole docker next to the homebridge docker
+These are some scripts to install and maintain the basic infrastructure of my network and smart home.
+The basic component is the Pi-Hole DNS server. I have found that using the router's DHCP and DNS resolution
+is unstable and results in many drops in connectivity. Using my own local DNS with ad blocking is much better
+and has been pretty stable for a good while. This runs in a Raspberry Pi 3 on top of Ubuntu Server.
 
+* Run this to create and start the pi-hole docker container.
 ```
 docker volume create dnsmasq
 
@@ -64,8 +74,8 @@ docker run -d \
   -e VIRTUAL_HOST=pi.hole\
   -e PROXY_LOCATION=pi.hole\
   --hostname pi.hole\
-  -p 80:80 -p 443:443 -p 53:53/tcp -p 53:53/udp\
   --cap-add=NET_ADMIN\
+  --network=host \
   --restart=unless-stopped\
   -v pihole:/etc/pihole\
   -v dnsmasq:/etc/dnsmasq.d\
@@ -74,17 +84,23 @@ docker run -d \
   --dns=127.0.0.1 --dns=1.1.1.2\
   pihole/pihole:latest
 ```
-
-Run this to start the homebridge server docker in the raspberry pi
-
+* Run this to update the container
 ```
-  docker volume create homebridge
-  docker run -d \
-  --name=homebridge\
-  --restart=always\
-  -e HOMEBRIDGE_CONFIG_UI=1 \
-  -e HOMEBRIDGE_CONFIG_UI_PORT=8080 \
-  -v homebridge:/homebridge \
-  -p 8080:8080 -p 52689:52689 \
-  oznu/homebridge
+#!/bin/bash
+docker pull pihole/pihole
+docker rm -f pihole 
+docker run -d \
+  --name=pihole \
+  -e VIRTUAL_HOST=pi.hole \
+  -e PROXY_LOCATION=pi.hole \
+  --hostname pi.hole \
+  --cap-add=NET_ADMIN \
+  --network=host \
+  --restart=always \
+  -v pihole:/etc/pihole \
+  -v dnsmasq:/etc/dnsmasq.d \
+  -e TZ="America/Los_Angeles" \
+  -e ServerIP="192.168.1.5" \
+  --dns=127.0.0.1 --dns=1.1.1.2 \
+  pihole/pihole:latest
 ```
